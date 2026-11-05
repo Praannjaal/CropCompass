@@ -37,7 +37,7 @@ function SatelliteChart({ view, records, catalog }: { view: VegetationView; reco
       ]);
     return {
       tooltip: { trigger: "axis", valueFormatter: (value: unknown) => (typeof value === "number" ? value.toFixed(2) : "—") },
-      legend: { bottom: 36, icon: "roundRect", textStyle: { color: "#44403c" } },
+      legend: { bottom: 36, icon: "roundRect", textStyle: { color: "#48443b" } },
       grid: { left: 44, right: 16, top: 28, bottom: 96 },
       xAxis: { type: "time", ...AXIS_STYLE },
       yAxis: { type: "value", min: 0, max: 1, name: "NDVI", ...AXIS_STYLE, ...SPLIT_LINE },
@@ -51,11 +51,11 @@ function SatelliteChart({ view, records, catalog }: { view: VegetationView; reco
           type: "line",
           showSymbol: false,
           data: view.points.map((point) => [point.date, point.smooth]),
-          lineStyle: { width: 2.5, color: "#047857" },
-          itemStyle: { color: "#047857" },
+          lineStyle: { width: 2.5, color: "#2f6438" },
+          itemStyle: { color: "#2f6438" },
           markArea: {
             silent: true,
-            label: { color: "#44403c", fontSize: 11, position: "insideTop" },
+            label: { color: "#48443b", fontSize: 11, position: "insideTop" },
             data: [...logged, ...unlogged],
           },
         },
@@ -64,7 +64,7 @@ function SatelliteChart({ view, records, catalog }: { view: VegetationView; reco
           type: "scatter",
           symbolSize: 4,
           data: view.points.filter((point) => point.raw != null).map((point) => [point.date, point.raw]),
-          itemStyle: { color: "#a8a29e" },
+          itemStyle: { color: "#a19a89" },
         },
       ],
     };

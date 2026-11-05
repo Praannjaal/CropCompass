@@ -1,14 +1,263 @@
 @import "tailwindcss";
 
+/*
+ * "Field operations" theme: a calm, data-first look built on muted earth colours.
+ * Components use Tailwind's stone (neutrals), emerald (brand), amber, red and sky scales, so redefining those
+ * variables reskins every screen. Dark mode swaps the same variables under :root[data-theme="dark"]
+ * (set before first paint by the script in index.html), so no component needs dark: variants.
+ */
 @theme {
-  --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", "Nirmala UI", "Noto Sans", Roboto, Arial, sans-serif;
+
+  --color-surface: #ffffff;
+  --color-brand: #2f6438;
+  --color-brand-strong: #26512e;
+
+  /* Linen and graphite neutrals */
+  --color-stone-50: #f7f6f2;
+  --color-stone-100: #efede6;
+  --color-stone-200: #e1ddd2;
+  --color-stone-300: #c9c3b4;
+  --color-stone-400: #a19a89;
+  --color-stone-500: #736d60;
+  --color-stone-600: #5c574c;
+  --color-stone-700: #48443b;
+  --color-stone-800: #33302a;
+  --color-stone-900: #22201c;
+  --color-stone-950: #151411;
+
+  /* Forest green */
+  --color-emerald-50: #eef4ee;
+  --color-emerald-100: #d9e7da;
+  --color-emerald-200: #b4cfb6;
+  --color-emerald-300: #86b18b;
+  --color-emerald-400: #5c9363;
+  --color-emerald-500: #3f7a48;
+  --color-emerald-600: #2f6438;
+  --color-emerald-700: #26512e;
+  --color-emerald-800: #1f4126;
+  --color-emerald-900: #1a3620;
+  --color-emerald-950: #0d1f11;
+
+  /* Wheat and ochre */
+  --color-amber-50: #faf5e8;
+  --color-amber-100: #f3e7c6;
+  --color-amber-200: #e8d29a;
+  --color-amber-300: #d9b768;
+  --color-amber-400: #c99d45;
+  --color-amber-500: #b0832e;
+  --color-amber-600: #8f6823;
+  --color-amber-700: #70511d;
+  --color-amber-800: #5a421b;
+  --color-amber-900: #4a3719;
+
+  /* Clay */
+  --color-red-50: #fbf1ee;
+  --color-red-100: #f5ddd6;
+  --color-red-200: #ebbcae;
+  --color-red-300: #dc9380;
+  --color-red-400: #c96a53;
+  --color-red-500: #b04e37;
+  --color-red-600: #93402d;
+  --color-red-700: #773427;
+  --color-red-800: #612c23;
+  --color-red-900: #50271f;
+
+  /* Slate water */
+  --color-sky-50: #eff4f7;
+  --color-sky-100: #dbe6ee;
+  --color-sky-200: #b8cddb;
+  --color-sky-300: #8badc2;
+  --color-sky-400: #5f8aa6;
+  --color-sky-500: #456f8c;
+  --color-sky-600: #375a73;
+  --color-sky-700: #2e4a5e;
+  --color-sky-800: #283f4f;
+  --color-sky-900: #233543;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-surface: #171b17;
+  --color-brand: #3f7a48;
+  --color-brand-strong: #4a8a54;
+
+  --color-stone-50: #111411;
+  --color-stone-100: #1b201b;
+  --color-stone-200: #2a302a;
+  --color-stone-300: #3a413a;
+  --color-stone-400: #59615a;
+  --color-stone-500: #8b938a;
+  --color-stone-600: #a6ada5;
+  --color-stone-700: #c2c8c1;
+  --color-stone-800: #dadfd9;
+  --color-stone-900: #ebeeea;
+  --color-stone-950: #f6f8f5;
+
+  --color-emerald-50: #142218;
+  --color-emerald-100: #1a2d1f;
+  --color-emerald-200: #24402b;
+  --color-emerald-300: #31593a;
+  --color-emerald-400: #467a50;
+  --color-emerald-500: #5f9a69;
+  --color-emerald-600: #7cb285;
+  --color-emerald-700: #98c7a0;
+  --color-emerald-800: #b6dbbc;
+  --color-emerald-900: #d3ecd7;
+  --color-emerald-950: #eaf6ec;
+
+  --color-amber-50: #241e10;
+  --color-amber-100: #2f2714;
+  --color-amber-200: #45391b;
+  --color-amber-300: #6a5626;
+  --color-amber-400: #95773a;
+  --color-amber-500: #b8944e;
+  --color-amber-600: #cfad68;
+  --color-amber-700: #dfc489;
+  --color-amber-800: #ebd6a8;
+  --color-amber-900: #f3e6c8;
+
+  --color-red-50: #2a1613;
+  --color-red-100: #371c18;
+  --color-red-200: #522823;
+  --color-red-300: #773a31;
+  --color-red-400: #a35445;
+  --color-red-500: #c46c5a;
+  --color-red-600: #d68a79;
+  --color-red-700: #e3a698;
+  --color-red-800: #eec3b8;
+  --color-red-900: #f6ddd7;
+
+  --color-sky-50: #131c23;
+  --color-sky-100: #18242d;
+  --color-sky-200: #223441;
+  --color-sky-300: #31495a;
+  --color-sky-400: #4a6a80;
+  --color-sky-500: #6a8ca3;
+  --color-sky-600: #8aa8bc;
+  --color-sky-700: #a8c0d0;
+  --color-sky-800: #c5d6e1;
+  --color-sky-900: #dde8ef;
 }
 
 @layer base {
   body {
     @apply bg-stone-50 text-stone-900 antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.015em;
+  }
+  dd,
+  td,
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-emerald-600;
   }
+}
+
+/* ---------- Satellite views ---------- */
+.sat-view .leaflet-container {
+  background: #1c211c;
+  font: inherit;
+}
+.sat-view .leaflet-control-attribution {
+  display: none;
+}
+/* A faint survey grid, shown while a farm's data is being prepared. */
+.sat-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.09) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+/* A scan line sweeping across the image. */
+.sat-scan::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 30%;
+  background: linear-gradient(180deg, transparent, rgb(190 230 200 / 0.22) 85%, rgb(220 255 225 / 0.65) 100%);
+  border-bottom: 1px solid rgb(220 255 225 / 0.8);
+  animation: sat-sweep 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  pointer-events: none;
+}
+.sat-scan-once::after {
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+@keyframes sat-sweep {
+  from {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(340%);
+    opacity: 0;
+  }
+}
+.sat-pin {
+  position: relative;
+}
+.sat-pin::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 9999px;
+  border: 2px solid rgb(255 255 255 / 0.7);
+  animation: sat-ping 2.4s ease-out infinite;
+}
+@keyframes sat-ping {
+  from {
+    transform: scale(0.4);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Street maps (OpenStreetMap) are only available light; dim and invert them in dark mode. */
+:root[data-theme="dark"] .street-map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
+}
+
+.animate-fade {
+  animation: fade-in 0.35s ease-out both;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sat-scan::after,
+  .sat-pin::before,
+  .animate-fade {
+    animation: none !important;
+  }
+  .sat-scan::after {
+    display: none;
+  }
+}
+
+/* Sprout reserves room for its floating button; keep that room inside the footer, not below it. */
+.sprout-shell:has(.site-footer) {
+  padding-bottom: 0;
+}
+.sprout-shell .site-footer {
+  padding-bottom: calc(1.25rem + 84px);
 }

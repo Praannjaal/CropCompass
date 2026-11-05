@@ -62,7 +62,7 @@ function PercentileBar({ value }: { value: number }) {
     <div className="mt-4" aria-hidden="true">
       <div className="relative h-2 rounded-full bg-gradient-to-r from-amber-400 via-stone-200 to-sky-500">
         <span
-          className="absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-stone-900 shadow"
+          className="absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-surface bg-stone-900 shadow"
           style={{ left: `${position}%` }}
         />
       </div>
@@ -287,9 +287,9 @@ function ClimateView({ profile, onOpenHistory }: { profile: ClimateProfile; onOp
 
   const monthlyOption = useMemo<EChartsCoreOption>(
     () => ({
-      color: ["#0284c7", "#d97706"],
+      color: ["#456f8c", "#b0832e"],
       tooltip: { trigger: "axis", valueFormatter: (value: unknown) => `${value} mm` },
-      legend: { bottom: 0, icon: "roundRect", textStyle: { color: "#44403c" } },
+      legend: { bottom: 0, icon: "roundRect", textStyle: { color: "#48443b" } },
       grid: { left: 48, right: 16, top: 24, bottom: 56 },
       xAxis: { type: "category", data: profile.monthly.map((row) => monthName(row.month)), axisTick: { show: false }, ...AXIS_STYLE },
       yAxis: { type: "value", name: "mm", ...AXIS_STYLE, ...SPLIT_LINE },
@@ -327,13 +327,13 @@ function ClimateView({ profile, onOpenHistory }: { profile: ClimateProfile; onOp
           type: "bar",
           data: by_year.map((row) => ({
             value: row.mm,
-            itemStyle: { color: row.mm < dependable_mm ? "#f59e0b" : "#38bdf8", borderRadius: [3, 3, 0, 0] },
+            itemStyle: { color: row.mm < dependable_mm ? "#c99d45" : "#5f8aa6", borderRadius: [3, 3, 0, 0] },
           })),
           markLine: {
             symbol: "none",
             silent: true,
-            lineStyle: { type: "dashed", color: "#57534e" },
-            label: { position: "insideEndTop", formatter: "{b}: {c} mm", color: "#44403c" },
+            lineStyle: { type: "dashed", color: "#5c574c" },
+            label: { position: "insideEndTop", formatter: "{b}: {c} mm", color: "#48443b" },
             data: [
               { name: t("climate.median"), yAxis: median_mm },
               { name: t("climate.dependableLine"), yAxis: dependable_mm },

@@ -73,13 +73,13 @@ function YieldChart({ crop }: { crop: CropFitCrop }) {
           barMaxWidth: 14,
           data: crop.yield.by_year.map((row) => ({
             value: row.kg_ha,
-            itemStyle: { color: row.kg_ha < attainable / 2 ? "#f59e0b" : "#10b981", borderRadius: [3, 3, 0, 0] },
+            itemStyle: { color: row.kg_ha < attainable / 2 ? "#c99d45" : "#3f7a48", borderRadius: [3, 3, 0, 0] },
           })),
           markLine: {
             symbol: "none",
             silent: true,
-            lineStyle: { type: "dashed", color: "#78716c" },
-            label: { position: "end", color: "#44403c", formatter: "{b}" },
+            lineStyle: { type: "dashed", color: "#736d60" },
+            label: { position: "end", color: "#48443b", formatter: "{b}" },
             data: [
               { name: t("crops.attainable"), yAxis: attainable },
               { name: t("crops.half"), yAxis: attainable / 2 },
@@ -301,7 +301,7 @@ export function CropFitPanel({ farm, onOpenHistory }: { farm: Farm; onOpenHistor
                   }}
                   className={cx(
                     "rounded-lg px-4 py-2 text-sm font-medium transition",
-                    activeSeason === key ? "bg-white text-stone-900 shadow-sm" : "text-stone-600 hover:text-stone-900",
+                    activeSeason === key ? "bg-surface text-stone-900 shadow-sm" : "text-stone-600 hover:text-stone-900",
                   )}
                 >
                   {t(`history.seasonName.${key}`)}

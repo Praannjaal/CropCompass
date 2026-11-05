@@ -21,7 +21,7 @@ const PIN_ICON = L.divIcon({
 });
 const CORNER_ICON = L.divIcon({
   className: "",
-  html: '<div class="size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-emerald-700 bg-white shadow"></div>',
+  html: '<div class="size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-emerald-700 bg-surface shadow"></div>',
   iconSize: [0, 0],
 });
 
@@ -154,7 +154,7 @@ export function FieldMap({ mode, pin, corners, flyTo, onPin, onCorners, onSearch
     }
     if (mode === "boundary") {
       if (corners.length >= 2) {
-        layers.addLayer(L.polygon(corners, { color: "#047857", weight: 2, fillColor: "#10b981", fillOpacity: 0.2 }));
+        layers.addLayer(L.polygon(corners, { color: "#2f6438", weight: 2, fillColor: "#3f7a48", fillOpacity: 0.2 }));
       }
       corners.forEach((corner, index) => {
         const handle = L.marker(corner, { icon: CORNER_ICON, draggable: !readOnly });
@@ -177,7 +177,7 @@ export function FieldMap({ mode, pin, corners, flyTo, onPin, onCorners, onSearch
   return (
     <div className="space-y-3">
       {!readOnly && <PlaceSearch onPick={onSearch} />}
-      <div ref={box} className="h-80 w-full overflow-hidden rounded-xl border border-stone-200 sm:h-96" aria-label={t("newFarm.mapTitle")} />
+      <div ref={box} className="street-map h-80 w-full overflow-hidden rounded-xl border border-stone-200 sm:h-96" aria-label={t("newFarm.mapTitle")} />
     </div>
   );
 }

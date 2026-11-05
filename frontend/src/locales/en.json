@@ -32,6 +32,7 @@
     "irrigation": "Irrigation", "saved": "Conversation saved", "fallback": "Platform reference"
   },
   "quality": {
+    "weatherSource": "NASA POWER · daily since 1981", "soilSource": "ISRIC SoilGrids · 250 m", "satelliteSource": "NASA MODIS NDVI · 250 m, 16-day",
     "weather": "Weather", "soil": "Soil", "satellite": "Satellite",
     "pending": "Queued", "unverified": "Not verified", "downloading": "Downloading", "validating": "Validating",
     "verified": "Verified", "needs_attention": "Needs attention", "ready": "Available", "partial": "Downloading",
@@ -55,6 +56,38 @@
     "resetAccepted": "Request accepted. If this account exists, check your email. Delivery is not guaranteed; contact the administrator if no message arrives.",
     "fallow": "Recorded fallow is included in the soil-water estimate.", "fallowStart": "Fallow starts", "fallowEnd": "Fallow ends",
     "exportStarted": "Export requested. Check your browser downloads."
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "satellite": {
+    "searching": "Finding a clear satellite pass…",
+    "caption": "{{sensor}} · {{date}} · {{cloud}}% cloud",
+    "source": "NASA HLS 30 m",
+    "fallback": "NASA Blue Marble · no clear recent pass",
+    "label": "Satellite view of {{name}}",
+    "acquiring": "Acquiring Earth data for this field"
+  },
+  "tour": {
+    "watch": "Watch the 2-minute tour",
+    "title": "CropCompass in 2 minutes",
+    "close": "Close",
+    "note": "Narrated in English, with on-screen captions."
+  },
+  "how": {
+    "title": "How CropCompass works",
+    "subtitle": "From a pin on the map to a sowing plan, using free NASA Earth data.",
+    "step1Title": "Pin your field",
+    "step1Text": "Drop a pin or draw your field's boundary on the map.",
+    "step2Title": "NASA reads the sky",
+    "step2Text": "45 years of daily NASA POWER weather and MODIS satellite greenness for your exact spot.",
+    "step3Title": "Know your soil",
+    "step3Text": "Soil texture, water holding and carbon from ISRIC SoilGrids.",
+    "step4Title": "Get your next crop",
+    "step4Text": "Every crop is tested against 45 past seasons: odds of success, profit and a 2-year rotation."
   },
   "app": {
     "name": "CropCompass",
@@ -138,6 +171,7 @@
     "deleted": "Your account and all its data have been deleted."
   },
   "farms": {
+    "greetingMorning": "Good morning, {{name}}", "greetingAfternoon": "Good afternoon, {{name}}", "greetingEvening": "Good evening, {{name}}", "heroText": "Your fields, read from orbit. Open a farm for this season's sowing advice, or add a new field.", "monitored": "Fields monitored", "readyCount": "Ready for advice", "preparingCount": "Preparing data",
     "title": "My farms",
     "subtitle": "Each farm gets its own climate and soil profile from NASA and soil maps.",
     "add": "Add farm",
@@ -183,6 +217,7 @@
     "areaFromDrawing": "Filled in from the drawing; you can change it."
   },
   "farm": {
+    "successOdds": "Chance the crop doesn't fail", "dataTitle": "Earth data for this field", "rank": "Rank {{rank}}",
     "refresh": "Refresh data",
     "delete": "Delete farm",
     "confirmDelete": "Delete this farm and its data? This can't be undone.",

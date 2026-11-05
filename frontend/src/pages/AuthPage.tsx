@@ -1,3 +1,4 @@
+import { CloudSunRain, Gauge, Recycle } from "lucide-react";
 import type { FormEvent, ReactNode } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,10 +7,22 @@ import { ApiError } from "../api/client";
 import { useLogin, useMe, useRegister } from "../api/hooks";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { Logo } from "../components/Logo";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { TourButton } from "../components/TourButton";
+import { Satellite } from "../features/satellite/Satellite";
 import { Alert, Button, Field, Input } from "../components/ui";
 
 type Mode = "login" | "register";
+
+const PITCHES = [
+  { key: "pitch1", Icon: CloudSunRain },
+  { key: "pitch2", Icon: Gauge },
+  { key: "pitch3", Icon: Recycle },
+] as const;
 export type AuthNotice = "reset" | "deleted";
+
+/** The Telangana pilot area, shown behind the sign-in form. */
+const PILOT = { lat: 17.0, lon: 78.125 };
 
 /** Server messages are English; the common cases get the user's language. */
 export function useAuthError() {
@@ -27,36 +40,55 @@ export function useAuthError() {
 
 export function AuthShell({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
   const { t } = useTranslation();
+  const label = t("satellite.label", { name: "Telangana" });
   return (
-    <div className="grid min-h-dvh lg:grid-cols-2">
-      <aside className="hidden flex-col justify-between bg-gradient-to-br from-emerald-900 via-emerald-700 to-sky-800 p-12 text-white lg:flex">
-        <Logo light />
-        <div>
-          <p className="max-w-md text-3xl leading-tight font-semibold">{t("app.tagline")}</p>
-          <ul className="mt-8 space-y-4 text-emerald-50">
-            {(["pitch1", "pitch2", "pitch3"] as const).map((key) => (
-              <li key={key} className="flex gap-3">
-                <span className="mt-1.5 size-2 shrink-0 rounded-full bg-emerald-300" aria-hidden="true" />
-                {t(`auth.${key}`)}
-              </li>
-            ))}
-          </ul>
+    <div className="grid min-h-dvh lg:grid-cols-[1.1fr_1fr]">
+      <Satellite
+        lat={PILOT.lat}
+        lon={PILOT.lon}
+        zoom={12.5}
+        pin={false}
+        scan="once"
+        label={label}
+        className="hidden lg:block"
+      >
+        <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/35 to-black/70" aria-hidden="true" />
+        <div className="relative flex h-full flex-col justify-between p-12 text-white">
+          <Logo light />
+          <div className="animate-fade max-w-lg">
+            <p className="text-xs font-semibold tracking-[0.18em] text-white/70 uppercase">NASA Space Apps 2026 · Field Shift</p>
+            <p className="mt-3 text-4xl leading-tight font-semibold tracking-tight">{t("app.tagline")}</p>
+            <ul className="mt-8 divide-y divide-white/15 border-y border-white/15">
+              {PITCHES.map(({ key, Icon }) => (
+                <li key={key} className="flex items-center gap-3 py-3 text-sm text-white/90">
+                  <Icon className="size-4 shrink-0 text-[#d9b768]" aria-hidden="true" />
+                  {t(`auth.${key}`)}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="text-xs text-white/60">{t("app.footer")}</p>
         </div>
-        <p className="text-sm text-emerald-100/80">{t("app.footer")}</p>
-      </aside>
+      </Satellite>
 
-      <div className="flex flex-col px-4 py-6">
-        <div className="flex justify-end">
+      <div className="flex flex-col bg-surface px-4 py-6">
+        <div className="flex justify-end gap-2">
           <LanguageSwitcher />
+          <ThemeToggle />
         </div>
         <div className="flex flex-1 items-center justify-center py-6">
           <div className="w-full max-w-sm">
             <div className="mb-8 lg:hidden">
               <Logo />
+              <Satellite lat={PILOT.lat} lon={PILOT.lon} zoom={12} pin={false} label={label} className="mt-5 h-36 rounded-xl" />
+              <p className="mt-3 text-sm text-stone-600">{t("app.tagline")}</p>
             </div>
             <h1 className="text-2xl font-semibold">{title}</h1>
             <p className="mt-1 text-sm text-stone-500">{subtitle}</p>
             {children}
+            <div className="mt-8 flex justify-center border-t border-stone-200 pt-5">
+              <TourButton />
+            </div>
           </div>
         </div>
       </div>
