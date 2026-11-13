@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CropCompass: a seven-slide demonstration of crop-planning decision support using NASA Earth data.">
+  <title>CropCompass | Seven-Slide Project Demo</title>
+  <style>
+    :root { --ink:#172b24; --muted:#52645c; --green:#087a58; --mint:#e5f3eb; --blue:#157798; --blue-light:#eaf5fa; --amber:#b77818; --red:#bd594b; --line:#cfded5; --paper:#fff; --scale:1; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-height:100%; }
+    body { background:#dce6df; color:var(--ink); font-family:"Aptos","Segoe UI",sans-serif; letter-spacing:0; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    button { font:inherit; cursor:pointer; }
+    a { color:inherit; text-underline-offset:4px; }
+    :focus-visible { outline:3px solid #26b884; outline-offset:4px; }
+    .stage { width:100%; height:calc(100dvh - 72px); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .deck { width:1600px; height:900px; flex:0 0 1600px; transform:scale(var(--scale)); transform-origin:center; }
+    .slide { width:1600px; height:900px; padding:48px 68px 34px; background:var(--paper); display:flex; flex-direction:column; position:relative; }
+    .slide[hidden] { display:none; }
+    .topline { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:16px; font-size:18px; font-weight:600; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-mark { width:17px; height:25px; background:var(--green); border-radius:16px 0 16px 0; transform:rotate(22deg); }
+    .section-name { color:var(--muted); font-size:16px; font-weight:500; }
+    h1,h2,h3,p { margin:0; }
+    h1,h2,h3 { font-family:"Aptos Display","Trebuchet MS",sans-serif; font-weight:700; }
+    h1 { font-size:112px; line-height:1.02; }
+    h2 { font-size:66px; line-height:1.1; max-width:1320px; }
+    h3 { font-size:29px; line-height:1.2; }
+    .eyebrow { color:var(--green); font-size:19px; font-weight:700; text-transform:uppercase; margin-bottom:15px; }
+    .lead { font-size:29px; line-height:1.35; color:var(--muted); max-width:1080px; margin-top:18px; }
+    .body { flex:1; min-height:0; padding-top:36px; }
+    .footer { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; padding-top:16px; font-size:15px; line-height:1.35; color:var(--muted); }
+    .footer span:first-child { max-width:1320px; }
+    .page { font-weight:700; color:var(--green); white-space:nowrap; font-variant-numeric:tabular-nums; }
+    .cover { background:#f4faf6; overflow:hidden; }
+    .cover .topline,.cover .footer { position:relative; z-index:2; }
+    .cover .body { padding-top:38px; position:relative; z-index:2; }
+    .cover h1 { margin-bottom:16px; }
+    .cover .lead { color:var(--ink); font-size:38px; max-width:1020px; }
+    .cover .sub { max-width:380px; font-size:22px; line-height:1.4; color:var(--muted); margin-top:18px; }
+    .cover-scene { position:absolute; width:1060px; height:530px; object-fit:contain; right:68px; bottom:30px; opacity:1; }
+    .cover-caption { position:absolute; left:68px; bottom:132px; width:330px; z-index:3; font-size:23px; line-height:1.45; }
+    .cover-caption strong { display:block; font-size:32px; margin-bottom:12px; }
+    .cover-caption em { font-style:normal; color:var(--green); font-weight:700; }
+    .four { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:30px; margin-top:40px; }
+    .pillar { padding-top:20px; border-top:5px solid var(--green); }
+    .pillar:nth-child(2) { border-color:var(--blue); }
+    .pillar:nth-child(3) { border-color:var(--amber); }
+    .pillar:nth-child(4) { border-color:var(--red); }
+    .pillar .num { font-size:20px; color:var(--muted); font-variant-numeric:tabular-nums; margin-bottom:20px; }
+    .pillar p { font-size:24px; line-height:1.4; color:var(--muted); margin-top:14px; }
+    .question-band { margin-top:48px; display:flex; align-items:center; gap:40px; background:var(--mint); padding:28px 32px; border-left:5px solid var(--green); }
+    .question-band strong { font-size:27px; max-width:370px; }
+    .question-band p { font-size:25px; line-height:1.4; flex:1; }
+    .data-slide { background:#f3f7f9; }
+    .sources { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; margin-top:35px; }
+    .source { border-top:3px solid var(--blue); padding-top:16px; }
+    .source:last-child { border-color:var(--green); }
+    .source .metric { font-size:46px; line-height:1.15; font-weight:700; color:var(--blue); margin:17px 0 8px; }
+    .source:last-child .metric { color:var(--green); }
+    .source p { font-size:22px; line-height:1.4; color:var(--muted); }
+    .pipeline { margin-top:45px; display:grid; grid-template-columns:1fr 38px 1fr 38px 1fr; align-items:center; border-top:1px solid #bfd1dc; padding-top:25px; }
+    .pipeline strong { font-size:26px; display:block; margin-bottom:7px; }
+    .pipeline p { font-size:21px; color:var(--muted); }
+    .arrow { font-size:35px; color:var(--blue); text-align:center; }
+    .demo-layout { display:grid; grid-template-columns:minmax(0,1.75fr) minmax(0,1fr); gap:50px; margin-top:30px; align-items:start; }
+    .scene-frame { margin:0; }
+    .scene-frame img { width:100%; aspect-ratio:2/1; object-fit:contain; display:block; border:1px solid var(--line); border-radius:6px; }
+    figcaption { font-size:18px; line-height:1.4; color:var(--muted); margin-top:12px; }
+    .annotated { display:grid; gap:24px; }
+    .annotation { border-left:3px solid var(--green); padding-left:18px; }
+    .annotation:nth-child(2) { border-color:var(--blue); }
+    .annotation:nth-child(3) { border-color:var(--amber); }
+    .annotation h3 { font-size:27px; }
+    .annotation p { font-size:22px; color:var(--muted); line-height:1.4; margin-top:8px; }
+    .decision-note { margin-top:27px; font-size:23px; line-height:1.4; color:var(--green); font-weight:600; }
+    .planner-shot { width:100%; max-height:420px; object-fit:contain; display:block; border:1px solid var(--line); border-radius:6px; margin-top:28px; }
+    .three { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:34px; margin-top:25px; }
+    .three h3 { font-size:26px; }
+    .three p { font-size:21px; color:var(--muted); line-height:1.4; margin-top:7px; }
+    .trust { background:var(--ink); color:#f2faf5; }
+    .trust .topline { border-color:#456255; }
+    .trust .section-name,.trust .lead,.trust .footer { color:#bbd1c5; }
+    .trust .brand-mark { background:#67cf9e; }
+    .trust .eyebrow,.trust .page { color:#83dfb3; }
+    .trust-grid { display:grid; grid-template-columns:1fr 1fr; gap:70px; margin-top:35px; }
+    .trust-block { border-top:2px solid #527768; padding-top:23px; }
+    .trust-block h3 { color:#92dcf0; }
+    .trust-block p { font-size:25px; line-height:1.4; margin-top:13px; color:#d1e3d8; }
+    .access-strip { display:flex; gap:42px; align-items:center; border-top:1px solid #456255; margin-top:42px; padding-top:28px; }
+    .access-strip img { width:90px; height:90px; object-fit:contain; }
+    .access-strip .access-item { flex:1; }
+    .access-item strong { display:block; font-size:25px; }
+    .access-item span { display:block; font-size:20px; line-height:1.35; color:#bbd1c5; margin-top:7px; }
+    .closing { background:#eaf5ef; }
+    .closing .body { padding-top:34px; }
+    .impact { display:grid; grid-template-columns:1fr 1fr; gap:55px; margin-top:28px; }
+    .impact p { font-size:25px; line-height:1.4; }
+    .impact strong { color:var(--green); }
+    .project-link { display:block; font-size:35px; font-weight:700; margin-top:28px; color:var(--green); text-decoration:none; }
+    .repo-link { display:block; font-size:20px; margin-top:8px; }
+    .credits { border-top:1px solid #abcbbb; margin-top:30px; padding-top:20px; display:grid; grid-template-columns:1.15fr 1fr; gap:36px; font-size:17px; line-height:1.5; color:#365548; }
+    .credits h3 { font-size:19px; margin-bottom:7px; }
+    .credits a { text-decoration:none; border-bottom:1px solid #a4c4b3; }
+    .toolbar { height:72px; display:flex; align-items:center; justify-content:center; gap:12px; background:#172b24; color:#fff; padding:8px 16px; }
+    .toolbar button { min-height:38px; border:1px solid #557466; background:transparent; color:inherit; padding:7px 12px; border-radius:5px; }
+    .toolbar button:hover { background:#2b493c; }
+    .toolbar button:disabled { opacity:.4; cursor:default; }
+    .toolbar output { min-width:56px; text-align:center; font-variant-numeric:tabular-nums; }
+    .toolbar .print { margin-left:18px; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+    @media(max-width:600px) { .toolbar { gap:7px; padding:8px; font-size:12px; } .toolbar button { padding:7px 9px; } .toolbar .print { margin-left:0; } }
+    @media(prefers-reduced-motion:no-preference) { .slide:not([hidden]) .body { animation:reveal 180ms ease-out; } @keyframes reveal { from { opacity:.6; } to { opacity:1; } } }
+    @page { size:1600px 900px; margin:0; }
+    @media print {
+      html,body { margin:0; padding:0; background:white; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+      .stage { display:block; height:auto; overflow:visible; width:1600px; }
+      .deck { width:1600px; height:auto; transform:none!important; }
+      .slide,.slide[hidden] { display:flex!important; break-inside:avoid; break-after:page; page-break-after:always; }
+      .slide:last-child { break-after:auto; page-break-after:auto; }
+      .toolbar,.sr-only { display:none!important; }
+      .body { animation:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="CropCompass project demo">
+    <div class="deck">
+      <section class="slide cover" data-title="CropCompass" aria-label="Slide 1 of 7: CropCompass">
+        <header class="topline"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>CropCompass</span><span class="section-name">EARTH DATA FOR FARM DECISIONS</span></header>
+        <div class="body">
+          <p class="eyebrow">Crop-planning decision support</p>
+          <h1>CropCompass</h1>
+          <p class="lead">What should I plant next?</p>
+          <p class="sub">NASA weather. Soil context. Crop history. Your priorities.</p>
+        </div>
+        <img class="cover-scene" src="submission-assets/field-scene.png" alt="Actual CropCompass field cross-section showing modelled roots, soil water and explicitly assumed depth.">
+        <div class="cover-caption"><strong>A clearer comparison.</strong><p>Explore choices across <em>income, water, soil and risk.</em></p></div>
+        <footer class="footer"><span>NASA Space Apps project draft &middot; India crop pack &middot; Illustrative app view, not a field measurement</span><span class="page">01 / 07</span></footer>
+      </section>
+
+      <section class="slide" data-title="The farmer's decision" aria-label="Slide 2 of 7: The farmer's decision" hidden>
+        <header class="topline"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>CropCompass</span><span class="section-name">THE PROBLEM</span></header>
+        <div class="body">
+          <p class="eyebrow">One field. Competing priorities.</p>
+          <h2>A crop choice is a trade-off.</h2>
+          <p class="lead">A promising crop is not necessarily the right crop for this field, this water supply, or this rotation.</p>
+          <div class="four">
+            <div class="pillar"><p class="num">01 / INCOME</p><h3>Can it pay?</h3><p>Consider indicative costs and outcomes in a poor season.</p></div>
+            <div class="pillar"><p class="num">02 / WATER</p><h3>Can it finish?</h3><p>Rainfall timing and irrigation change the result.</p></div>
+            <div class="pillar"><p class="num">03 / SOIL</p><h3>What carries over?</h3><p>Roots, residue and previous crops matter.</p></div>
+            <div class="pillar"><p class="num">04 / RISK</p><h3>What can go wrong?</h3><p>Look beyond a rank to historical failures and assumptions.</p></div>
+          </div>
+          <div class="question-band"><strong>The missing connection</strong><p>Turn scattered Earth data into a comparison that includes the farmer's own context.</p></div>
+        </div>
+        <footer class="footer"><span>Intended for farmers and advisers; not a substitute for locally validated agronomic advice.</span><span class="page">02 / 07</span></footer>
+      </section>
+
+      <section class="slide data-slide" data-title="From Earth data to options" aria-label="Slide 3 of 7: From Earth data to options" hidden>
+        <header class="topline"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>CropCompass</span><span class="section-name">DATA + METHOD</span></header>
+        <div class="body">
+          <p class="eyebrow">Different sources. Explicit roles.</p>
+          <h2>From Earth data to crop options.</h2>
+          <div class="sources">
+            <div class="source"><h3>NASA POWER</h3><p class="metric">1981+</p><p>Daily weather for historical climate and crop-water trials.</p></div>
+            <div class="source"><h3>MODIS NDVI</h3><p class="metric">250 m</p><p>16-day greenness history; suggests season timing, not crop identity.</p></div>
+            <div class="source"><h3>SoilGrids</h3><p class="metric">6 depths</p><p>Mapped soil properties; known farmer values can override them.</p></div>
+            <div class="source"><h3>Farmer journal</h3><p class="metric">Your field</p><p>Crop dates, residue, irrigation context and priorities.</p></div>
+          </div>
+          <div class="pipeline">
+            <div><strong>Check + contextualize</strong><p>Annual checkpoints and source labels</p></div><div class="arrow" aria-hidden="true">&rarr;</div>
+            <div><strong>Simulate past seasons</strong><p>FAO-style water/yield + succession rules</p></div><div class="arrow" aria-hidden="true">&rarr;</div>
+            <div><strong>Compare trade-offs</strong><p>Historical distributions, not forecasts</p></div>
+          </div>
+        </div>
+        <footer class="footer"><span>POWER daily/monthly APIs &middot; MOD13Q1 via ORNL DAAC &middot; ISRIC SoilGrids &middot; FAO-56/33 and RothC-style methods</span><span class="page">03 / 07</span></footer>
+      </section>
+
+      <section class="slide" data-title="Try a crop" aria-label="Slide 4 of 7: Try a crop" hidden>
+        <header class="topline"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>CropCompass</span><span class="section-name">PRODUCT DEMO / FIELD VIEW</span></header>
+        <div class="body">
+          <p class="eyebrow">Explore before committing</p>
+          <h2>Make the assumptions visible.</h2>
+          <div class="demo-layout">
+            <figure class="scene-frame"><img src="submission-assets/field-scene.png" alt="Actual field preview for an illustrative brinjal scenario. Soil depth is labelled modelled and assumed, not measured."><figcaption>Actual app capture &middot; illustrative Telangana farm &middot; full irrigation selected &middot; green gram history</figcaption></figure>
+            <div class="annotated">
+              <div class="annotation"><h3>Try me</h3><p>Preview a crop without creating a journal entry or saving a plan.</p></div>
+              <div class="annotation"><h3>Know the source</h3><p>The 1 m profile is a modelling assumption, not detected bedrock.</p></div>
+              <div class="annotation"><h3>Keep context intact</h3><p>Seasonal crop fit and advice from today's modelled water are labelled separately.</p></div>
+            </div>
+          </div>
+          <p class="decision-note">The farmer can correct known soil values. The model should never hide an assumption as a measurement.</p>
+        </div>
+        <footer class="footer"><span>Screenshot: local app, 13 November 2026. Soil water, roots and outcomes are modelled; the sample history is illustrative.</span><span class="page">04 / 07</span></footer>
+      </section>
+
+      <section class="slide" data-title="Compare and plan" aria-label="Slide 5 of 7: Compare and plan" hidden>
+        <header class="topline"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>CropCompass</span><span class="section-name">PRODUCT DEMO / PLAN</span></header>
+        <div class="body">
+          <p class="eyebrow">Make the trade-off explicit</p>
+          <h2>Compare outcomes. Then save a plan.</h2>
+          <img class="planner-shot" src="submission-assets/planner.png" alt="An actual next-crop result showing illustrative profit, historical failures, yield, sowing date and relative pillar scores.">
+          <div class="three">
+            <div><h3>Read absolute risk</h3><p>Failures and yield ranges accompany the ranking.</p></div>
+            <div><h3>Choose what matters</h3><p>Income, water, soil and risk weights express preferences.</p></div>
+            <div><h3>Think beyond one season</h3><p>Explore rotations and retain assumptions in saved plans.</p></div>
+          </div>
+        </div>
+        <footer class="footer"><span>Illustrative full-irrigation scenario, 13 November 2026. Zero failures in the historical trials does not mean zero future risk. Prices and costs are indicative.</span><span class="page">05 / 07</span></footer>
+      </section>
+
+      <section class="slide trust" data-title="Trust and access" aria-label="Slide 6 of 7: Trust and access" hidden>
+        <header class="topline"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>CropCompass</span><span class="section-name">TRUST + ACCESS</span></header>
+        <div class="body">
+          <p class="eyebrow">Designed to explain, not overpromise</p>
+          <h2>Useful without hiding uncertainty.</h2>
+          <div class="trust-grid">
+            <div class="trust-block"><h3>Traceable evidence</h3><p>Separate source status, dates and confidence. Suspect weather stays quarantined; any historical-reference fallback is disclosed.</p><p>Verified ingestion is not field validation.</p></div>
+            <div class="trust-block"><h3>Models compute. Sprout explains.</h3><p>The deterministic engine produces crop results. Sprout explains selected evidence, with consent and usage limits.</p><p>AI answers can be wrong or unavailable.</p></div>
+          </div>
+          <div class="access-strip">
+            <img src="submission-assets/sprout.png" alt="CropCompass Sprout mascot">
+            <div class="access-item"><strong>English &middot; Hindi &middot; Telugu</strong><span>Local-language access, with terminology still needing native review.</span></div>
+            <div class="access-item"><strong>Guest access + guided tours</strong><span>Explore first; create an account to retain guest data.</span></div>
+            <div class="access-item"><strong>Private farm records</strong><span>Ownership checks, export and deletion controls.</span></div>
+          </div>
+        </div>
+        <footer class="footer"><span>React + TypeScript &middot; Python + FastAPI &middot; Neon PostgreSQL &middot; Vercel / Render &middot; AI-assisted development: GitHub Copilot</span><span class="page">06 / 07</span></footer>
+      </section>
+
+      <section class="slide closing" data-title="Impact and next steps" aria-label="Slide 7 of 7: Impact and next steps" hidden>
+        <header class="topline"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>CropCompass</span><span class="section-name">POTENTIAL IMPACT + NEXT STEPS</span></header>
+        <div class="body">
+          <p class="eyebrow">Start with a better-informed choice</p>
+          <h2>Better questions. Clearer trade-offs.</h2>
+          <div class="impact">
+            <p><strong>For farmers and advisers:</strong> connect Earth data with the field's history and the farmer's priorities.</p>
+            <p><strong>Next:</strong> calibrate with local field observations, evaluate with farmers, and expand region packs responsibly.</p>
+          </div>
+          <a class="project-link" href="https://crop-compass-three.vercel.app/">crop-compass-three.vercel.app</a>
+          <a class="repo-link" href="https://github.com/Praannjaal/CropCompass">github.com/Praannjaal/CropCompass</a>
+          <div class="credits">
+            <div><h3>Data and methods</h3><p><a href="https://power.larc.nasa.gov/">NASA POWER</a>; <a href="https://doi.org/10.5067/MODIS/MOD13Q1.061">MODIS MOD13Q1 V061</a> via <a href="https://doi.org/10.3334/ORNLDAAC/1600">ORNL DAAC REST</a>; <a href="https://doi.org/10.5194/soil-7-217-2021">ISRIC SoilGrids</a>; OpenStreetMap contributors (ODbL). FAO-56/33, Saxton &amp; Rawls, RothC-style methods.</p></div>
+            <div><h3>AI and software attribution</h3><p>Development/documentation: GitHub Copilot. Runtime explanations: Groq-hosted model (source default: openai/gpt-oss-120b). React, FastAPI and other open-source libraries; full references and license inventory in <a href="SPACE_APPS_SUBMISSION.md">SPACE_APPS_SUBMISSION.md</a>.</p></div>
+          </div>
+        </div>
+        <footer class="footer"><span>Decision-support prototype. No claim of validated yield, profit, water-saving or carbon-sequestration gains. No NASA endorsement implied.</span><span class="page">07 / 07</span></footer>
+      </section>
+    </div>
+  </main>
+  <nav class="toolbar" aria-label="Presentation controls">
+    <button id="previous" type="button" aria-label="Previous slide">Previous</button>
+    <output id="counter" aria-live="polite">1 / 7</output>
+    <button id="next" type="button" aria-label="Next slide">Next</button>
+    <button id="present" type="button">Present</button>
+    <button id="print" class="print" type="button">Print / PDF</button>
+  </nav>
+  <p id="announcement" class="sr-only" aria-live="polite"></p>
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    let current = Math.max(0, Math.min(slides.length - 1, Number(location.hash.slice(1)) - 1 || 0));
+    const previous = document.getElementById('previous');
+    const next = document.getElementById('next');
+    function fit() {
+      const scale = Math.max(0.1, Math.min((innerWidth - 24) / 1600, (innerHeight - 84) / 900));
+      document.documentElement.style.setProperty('--scale', String(scale));
+    }
+    function show(index) {
+      current = Math.min(slides.length - 1, Math.max(0, index));
+      slides.forEach((slide, slideIndex) => { slide.hidden = slideIndex !== current; });
+      previous.disabled = current === 0;
+      next.disabled = current === slides.length - 1;
+      document.getElementById('counter').textContent = `${current + 1} / ${slides.length}`;
+      document.getElementById('announcement').textContent = slides[current].getAttribute('aria-label');
+      history.replaceState(null, '', `#${current + 1}`);
+    }
+    previous.addEventListener('click', () => show(current - 1));
+    next.addEventListener('click', () => show(current + 1));
+    document.getElementById('print').addEventListener('click', () => print());
+    document.getElementById('present').addEventListener('click', async () => {
+      try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch {}
+    });
+    addEventListener('keydown', event => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest('input,textarea,select')) return;
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); show(current + 1); }
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); show(current - 1); }
+      if (event.key === 'Home') { event.preventDefault(); show(0); }
+      if (event.key === 'End') { event.preventDefault(); show(slides.length - 1); }
+    });
+    addEventListener('resize', fit);
+    show(current);
+    fit();
+  </script>
+</body>
+</html>
